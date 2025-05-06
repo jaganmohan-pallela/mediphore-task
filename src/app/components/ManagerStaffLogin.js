@@ -103,21 +103,21 @@ export default function ManagerStaffLogin({ mode, onSubmit, loading, onToggleMod
   const title = isManagerMode
     ? 'Manager Login'
     : isRegistering
-    ? 'Staff Registration'
-    : isVerifyingOtp
-    ? 'Verify OTP'
-    : 'Staff Login';
+      ? 'Staff Registration'
+      : isVerifyingOtp
+        ? 'Verify OTP'
+        : 'Staff Login';
   const subtitle = isManagerMode
     ? 'Sign in to your management account'
     : isRegistering
-    ? 'Create your staff account'
-    : isVerifyingOtp
-    ? `Enter the OTP sent to ${email}`
-    : 'Access your staff dashboard';
+      ? 'Create your staff account'
+      : isVerifyingOtp
+        ? `Enter the OTP sent to ${email}`
+        : 'Access your staff dashboard';
 
   return (
     <>
-      {/* Form Header */}
+
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
           {title}
@@ -125,10 +125,10 @@ export default function ManagerStaffLogin({ mode, onSubmit, loading, onToggleMod
         <p className="text-gray-600 dark:text-gray-400">{subtitle}</p>
       </div>
 
-      {/* Error Message */}
+
       {error && <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>}
 
-      {/* Login Form */}
+
       {!isRegistering && !isVerifyingOtp && (
         <form onSubmit={handleLoginSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -195,7 +195,7 @@ export default function ManagerStaffLogin({ mode, onSubmit, loading, onToggleMod
         </form>
       )}
 
-      {/* Registration Form */}
+
       {isRegistering && !isVerifyingOtp && (
         <form onSubmit={handleRegisterSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -209,7 +209,7 @@ export default function ManagerStaffLogin({ mode, onSubmit, loading, onToggleMod
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 shadow-sm"
-              placeholder="e.g., John Doe"
+              placeholder="Enter your Name"
             />
           </div>
           <div className="space-y-2">
@@ -283,7 +283,7 @@ export default function ManagerStaffLogin({ mode, onSubmit, loading, onToggleMod
         </form>
       )}
 
-      {/* OTP Verification Form */}
+
       {isVerifyingOtp && (
         <form onSubmit={handleOtpSubmit} className="space-y-6">
           <div className="space-y-2">

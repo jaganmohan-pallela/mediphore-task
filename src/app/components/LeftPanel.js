@@ -1,74 +1,64 @@
 import Image from "next/image";
-import { CheckCircle, LineChart, HeartPulse } from "lucide-react";
+import { Shield, BarChart2, Heart } from "lucide-react";
 
 export default function AuthSidebar() {
   return (
-    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-b from-blue-900 to-blue-950 p-8 flex-col justify-between relative overflow-hidden">
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 bg-grid-white/5 opacity-20"></div>
-      
-      {/* Subtle accent elements */}
-      <div className="absolute top-20 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-2xl"></div>
-      <div className="absolute bottom-20 left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-2xl"></div>
-      
-      {/* Content */}
+    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-indigo-100 via-blue-50 to-white p-8 flex-col justify-between relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="wave-bg"></div>
+      </div>
+
       <div className="relative z-10 space-y-6">
-        <div className="mb-6">
-          <Image
-            src="/mediphore-logo-white.svg" 
-            alt="Mediphore"
-            width={180}
-            height={48}
-            className="mb-2"
-          />
-          <p className="text-blue-200 text-sm">Healthcare Management Portal</p>
-        </div>
-        
         <div className="space-y-4">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
-            Streamline Your <br />
-            <span className="text-cyan-300">Healthcare Operations</span>
+          {/* <Image
+            src="/mediphore_logo.png"
+            alt="Mediphore"
+            width={140}
+            height={36}
+            className="mb-2 bg-gray-700"
+          /> */}
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Care Made <span className="text-indigo-600">Simple</span>
           </h1>
-          <p className="text-base text-slate-300 max-w-md leading-relaxed">
-            Access your comprehensive dashboard and manage patient care, clinical workflows, and administrative tasks in one secure platform.
+          <p className="text-sm text-gray-600 max-w-sm leading-relaxed">
+            Helping you focus on patients with tools that are easy to use and secure.
           </p>
         </div>
       </div>
-      
-      {/* Features list */}
-      <div className="relative z-10 py-8">
-        <h3 className="text-sm font-medium text-slate-300 uppercase tracking-wider mb-4">
-          Platform Benefits
+
+      {/* Features List */}
+      <div className="relative z-10 space-y-6">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          What We Offer
         </h3>
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div className="flex items-start gap-3">
-            <CheckCircle className="h-5 w-5 text-cyan-400 mt-0.5 shrink-0" />
+            <Shield className="h-5 w-5 text-indigo-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-white font-medium mb-1">HIPAA Compliant Security</p>
-              <p className="text-sm text-slate-300">End-to-end encryption with enterprise-grade protection</p>
+              <p className="text-gray-900 font-medium text-sm">Safe & Secure</p>
+              <p className="text-xs text-gray-500">Your data is protected with top-notch security.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <LineChart className="h-5 w-5 text-cyan-400 mt-0.5 shrink-0" />
+            <BarChart2 className="h-5 w-5 text-indigo-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-white font-medium mb-1">Clinical Analytics</p>
-              <p className="text-sm text-slate-300">Real-time insights for improved patient outcomes</p>
+              <p className="text-gray-900 font-medium text-sm">Clear Insights</p>
+              <p className="text-xs text-gray-500">Understand your work with real-time data.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <HeartPulse className="h-5 w-5 text-cyan-400 mt-0.5 shrink-0" />
+            <Heart className="h-5 w-5 text-indigo-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-white font-medium mb-1">Patient-Centered Care</p>
-              <p className="text-sm text-slate-300">Comprehensive tools for managing patient journeys</p>
+              <p className="text-gray-900 font-medium text-sm">Patient Focus</p>
+              <p className="text-xs text-gray-500">Tools to care for patients, step by step.</p>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Footer */}
-      <div className="relative z-10 mt-6">
-        <p className="text-xs text-slate-400">
-          © 2025 Mediphore Health Technologies. All rights reserved.
+
+      <div className="relative z-10">
+        <p className="text-xs text-gray-400">
+          Made with care by Mediphore, 2025.
         </p>
       </div>
     </div>

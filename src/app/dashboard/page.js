@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AddTaskForm from "../components/AddTaskForm";
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState([]);
@@ -227,95 +228,127 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Tabs and Add Task Button */}
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-950 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <div className="flex space-x-4">
-              <button
-                onClick={() => setActiveTab("openTasks")}
-                className={`py-2 px-4 font-medium rounded-md transition duration-200 ${
-                  activeTab === "openTasks"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                }`}
-              >
-                Open Tasks
-              </button>
-              <button
-                onClick={() => setActiveTab("staffRequests")}
-                className={`py-2 px-4 font-medium rounded-md transition duration-200 ${
-                  activeTab === "staffRequests"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                }`}
-              >
-                Staff Requests
-              </button>
-              {/* <button
-                onClick={() => setActiveTab("assignedTasks")}
-                className={`py-2 px-4 font-medium rounded-md transition duration-200 ${
-                  activeTab === "assignedTasks"
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
-                }`}
-              >
-                Assigned Tasks
-              </button> */}
-            </div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Manager Dashboard
+            </h1>
             <button
               onClick={handleAddTask}
-              className="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
             >
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 4v16m8-8H4"
+                ></path>
+              </svg>
               Add Task
             </button>
           </div>
 
-          {/* Loading and Error States */}
-          {loading && (
-            <p className="text-gray-600 dark:text-gray-400">
-              Loading {activeTab === "openTasks" ? "tasks" : activeTab === "staffRequests" ? "requests" : "assigned tasks"}...
-            </p>
-          )}
-          {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
+          <div className="flex space-x-2 mb-8 border-b border-gray-200 dark:border-gray-800">
+            <button
+              onClick={() => setActiveTab("openTasks")}
+              className={`py-3 px-4 text-sm font-medium transition-all duration-200 border-b-2 ${activeTab === "openTasks"
+                  ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                  : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                }`}
+            >
+              Open Tasks
+            </button>
+            <button
+              onClick={() => setActiveTab("staffRequests")}
+              className={`py-3 px-4 text-sm font-medium transition-all duration-200 border-b-2 ${activeTab === "staffRequests"
+                  ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                  : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                }`}
+            >
+              Staff Requests
+            </button>
 
-          {/* Open Tasks Tab */}
+            {/* <button
+              onClick={() => setActiveTab("assignedTasks")}
+              className={`py-3 px-4 text-sm font-medium transition-all duration-200 border-b-2 ${
+                activeTab === "assignedTasks"
+                  ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                  : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+              }`}
+            >
+              Assigned Tasks
+            </button> */}
+          </div>
+
+          {loading && (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
+              <p className="ml-2 text-gray-600 dark:text-gray-400">
+                Loading {activeTab === "openTasks" ? "tasks" : "requests"}...
+              </p>
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/50 p-4 rounded-lg">
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
+
           {activeTab === "openTasks" && !loading && !error && tasks.length === 0 && (
-            <p className="text-gray-600 dark:text-gray-400">No tasks found.</p>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                No open tasks found. Create a new task to get started.
+              </p>
+            </div>
           )}
           {activeTab === "openTasks" && !loading && !error && tasks.length > 0 && (
             <div className="grid gap-6">
               {tasks.map((task) => (
                 <div
                   key={task.taskId}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
                 >
                   <div className="flex justify-between items-start">
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <div className="space-y-2">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                         {task.taskName}
                       </h2>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        <strong>Project ID:</strong> {task.projectId}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        <strong>Schedule:</strong> {task.startDate} to {task.endDate}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        <strong>Skills:</strong> {task.requiredSkills.join(", ")}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        <strong>Status:</strong> {task.status}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        <strong>Created:</strong>{" "}
-                        {new Date(task.createdAt).toLocaleString()}
-                      </p>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                        <p>
+                          <span className="font-medium">Project ID:</span>{" "}
+                          {task.projectId}
+                        </p>
+                        <p>
+                          <span className="font-medium">Schedule:</span>{" "}
+                          {task.startDate} to {task.endDate}
+                        </p>
+                        <p>
+                          <span className="font-medium">Skills:</span>{" "}
+                          {task.requiredSkills.join(", ")}
+                        </p>
+                        <p>
+                          <span className="font-medium">Status:</span>{" "}
+                          {task.status}
+                        </p>
+                        <p>
+                          <span className="font-medium">Created:</span>{" "}
+                          {new Date(task.createdAt).toLocaleString()}
+                        </p>
+                      </div>
                     </div>
                     {task.status === "Open" && (
                       <button
                         onClick={() => openAssignModal(task)}
-                        className="py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
+                        className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
                       >
                         Assign Task
                       </button>
@@ -326,123 +359,163 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Staff Requests Tab */}
-          {activeTab === "staffRequests" && !loading && !error && requests.length === 0 && (
-            <p className="text-gray-600 dark:text-gray-400">No staff requests found.</p>
-          )}
-          {activeTab === "staffRequests" && !loading && !error && requests.length > 0 && (
-            <div className="grid gap-6">
-              {requests.map((request) => (
-                <div
-                  key={`${request.taskId}-${request.email}`}
-                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md"
-                >
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    Task: {request.task.taskName}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong>Task ID:</strong> {request.taskId}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong>Project ID:</strong> {request.task.projectId}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong>Task Schedule:</strong> {request.task.startDate} to{" "}
-                    {request.task.endDate}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <strong>Task Skills:</strong>{" "}
-                    {request.task.requiredSkills.join(", ")}
-                  </p>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                      Staff Details
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      <strong>Name:</strong> {request.staff.name}
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      <strong>Email:</strong> {request.email}
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      <strong>Skills:</strong>{" "}
-                      {request.staff.skills?.join(", ") || "None"}
-                    </p>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    <strong>Status:</strong> {request.status}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    <strong>Requested At:</strong>{" "}
-                    {new Date(request.createdAt).toLocaleString()}
-                  </p>
-                  {request.status === "pending" && (
-                    <div className="mt-4 flex space-x-4">
-                      <button
-                        onClick={() => handleRequestAction(request.taskId, request.email, "approve")}
-                        className="py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => handleRequestAction(request.taskId, request.email, "reject")}
-                        className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
-                      >
-                        Reject
-                      </button>
+
+          {activeTab === "staffRequests" &&
+            !loading &&
+            !error &&
+            requests.length === 0 && (
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  No staff requests found.
+                </p>
+              </div>
+            )}
+          {activeTab === "staffRequests" &&
+            !loading &&
+            !error &&
+            requests.length > 0 && (
+              <div className="grid gap-6">
+                {requests.map((request) => (
+                  <div
+                    key={`${request.taskId}-${request.email}`}
+                    className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                  >
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                      {request.task.taskName}
+                    </h2>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                      <p>
+                        <span className="font-medium">Task ID:</span>{" "}
+                        {request.taskId}
+                      </p>
+                      <p>
+                        <span className="font-medium">Project ID:</span>{" "}
+                        {request.task.projectId}
+                      </p>
+                      <p>
+                        <span className="font-medium">Schedule:</span>{" "}
+                        {request.task.startDate} to {request.task.endDate}
+                      </p>
+                      <p>
+                        <span className="font-medium">Skills:</span>{" "}
+                        {request.task.requiredSkills.join(", ")}
+                      </p>
                     </div>
-                  )}
-                </div>
-              ))}
+                    <div className="mt-4">
+                      <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                        Staff Details
+                      </h3>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1 mt-1">
+                        <p>
+                          <span className="font-medium">Name:</span>{" "}
+                          {request.staff.name}
+                        </p>
+                        <p>
+                          <span className="font-medium">Email:</span>{" "}
+                          {request.email}
+                        </p>
+                        <p>
+                          <span className="font-medium">Skills:</span>{" "}
+                          {request.staff.skills?.join(", ") || "None"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-3 space-y-1">
+                      <p>
+                        <span className="font-medium">Status:</span>{" "}
+                        {request.status}
+                      </p>
+                      <p>
+                        <span className="font-medium">Requested At:</span>{" "}
+                        {new Date(request.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                    {request.status === "pending" && (
+                      <div className="mt-4 flex space-x-3">
+                        <button
+                          onClick={() =>
+                            handleRequestAction(
+                              request.taskId,
+                              request.email,
+                              "approve"
+                            )
+                          }
+                          className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Approve
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleRequestAction(
+                              request.taskId,
+                              request.email,
+                              "reject"
+                            )
+                          }
+                          className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
+                        >
+                          <XCircle className="w-4 h-4 mr-2" />
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+          {activeTab === "assignedTasks" && !loading && (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm text-center">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                Assigned tasks will be displayed here.
+              </p>
             </div>
           )}
 
-          {/* Assigned Tasks Tab (Placeholder) */}
-          {activeTab === "assignedTasks" && !loading && (
-            <p className="text-gray-600 dark:text-gray-400">
-              Assigned tasks will be displayed here.
-            </p>
-          )}
-
-          {/* Add Task Modal */}
           {isModalOpen && (
             <AddTaskForm onClose={closeModal} onTaskAdded={handleTaskAdded} />
           )}
 
-          {/* Assign Task Modal */}
+
           {isAssignModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-2xl w-full">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-lg w-full">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                   Assign Task: {selectedTask?.taskName}
                 </h2>
                 {error && (
-                  <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+                  <div className="bg-red-50 dark:bg-red-900/50 p-3 rounded-md mb-4">
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                      {error}
+                    </p>
+                  </div>
                 )}
                 {staffList.length === 0 ? (
-                  <p className="text-gray-600 dark:text-gray-400">No staff available.</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    No staff available for this task.
+                  </p>
                 ) : (
-                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                  <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                     {staffList.map((staff) => (
                       <div
                         key={staff.email}
-                        className={`p-4 border rounded-md cursor-pointer transition duration-200 ${
-                          selectedStaff?.email === staff.email
-                            ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900"
-                            : "border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        }`}
+                        className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${selectedStaff?.email === staff.email
+                            ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/50"
+                            : "border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                          }`}
                         onClick={() => setSelectedStaff(staff)}
                       >
                         <div className="flex justify-between items-center">
-                          <div>
-                            <p className="text-lg font-medium text-gray-900 dark:text-white">
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {staff.name} ({staff.email})
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               Skills: {staff.skills?.join(", ") || "None"}
                             </p>
                           </div>
-                          <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                          <p className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
                             {staff.percentageMatch}% Match
                           </p>
                         </div>
@@ -450,17 +523,17 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 )}
-                <div className="mt-6 flex justify-end space-x-4">
+                <div className="mt-6 flex justify-end space-x-3">
                   <button
                     onClick={closeAssignModal}
-                    className="py-2 px-4 bg-gray-300 hover:bg-gray-400 text-gray-800 dark:text-gray-200 font-medium rounded-md transition duration-200"
+                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleAssignTask}
                     disabled={!selectedStaff}
-                    className="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition duration-200 disabled:opacity-50"
+                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Assign
                   </button>

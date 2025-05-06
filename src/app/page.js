@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import LeftPanel from "./components/LeftPanel";
+import AuthSidebar from "./components/LeftPanel";
 import ManagerStaffLogin from "./components/ManagerStaffLogin";
 
 export default function AuthPage() {
@@ -10,7 +10,6 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Check for existing token and redirect
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -31,10 +30,8 @@ export default function AuthPage() {
     }
   }, [router]);
 
-  // Authentication handler
   const handleAuth = async (formData) => {
     setLoading(true);
-
     try {
       const endpoint =
         authMode === "manager-login"
@@ -52,10 +49,8 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Store JWT in localStorage
         localStorage.setItem("token", data.token);
         console.log("Login successful:", data);
-        // Redirect to appropriate dashboard
         if (authMode === "manager-login") {
           router.push("/dashboard");
         } else {
@@ -74,44 +69,38 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Left decorative panel */}
-      <LeftPanel />
-
-      {/* Right panel - auth forms */}
-      <div className="w-full lg:w-1/2 p-8 sm:p-12 flex items-center justify-center">
-        <div className="w-full max-w-md">
-          {/* Auth Type Selector */}
-          <div className="flex rounded-lg border border-gray-200 dark:border-gray-800 mb-8 overflow-hidden">
+    <div className="flex bg-gray-50 dark:bg-gray-900">
+      <AuthSidebar />
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12">
+        <div className="w-full max-w-md space-y-8">
+          <div className="flex rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
             <button
-              className={`flex-1 py-3 px-4 text-center text-sm font-medium transition-colors ${
-                authMode === "manager-login"
-                  ? "bg-gray-900 text-white dark:bg-gray-800"
-                  : "bg-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800/50"
-              }`}
+              className={`flex-1 py-3 px-4 text-sm font-medium transition-all duration-200 ${authMode === "manager-login"
+                ? "bg-indigo-600 text-white"
+                : "bg-transparent text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               onClick={() => setAuthMode("manager-login")}
             >
               Manager Login
             </button>
-            <button
-              className={`flex-1 py-3 px-4 text-center text-sm font-medium transition-colors ${
-                authMode === "staff-login"
-                  ? "bg-gray-900 text-white dark:bg-gray-800"
-                  : "bg-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800/50"
-              }`}
+            <button nus
+              className={`flex-1 py-3 px-4 text-sm font-medium transition-all duration-200 ${authMode === "staff-login"
+                ? "bg-indigo-600 text-white"
+                : "bg-transparent text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               onClick={() => setAuthMode("staff-login")}
             >
-              Staff
+              Staff Login
             </button>
           </div>
-
-          {/* Render ManagerStaffLogin */}
-          <ManagerStaffLogin
-            mode={authMode}
-            onSubmit={handleAuth}
-            loading={loading}
-            onToggleMode={() => {}}
-          />
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <ManagerStaffLogin
+              mode={authMode}
+              onSubmit={handleAuth}
+              loading={loading}
+              onToggleMode={() => { }}
+            />
+          </div>
         </div>
       </div>
     </div>

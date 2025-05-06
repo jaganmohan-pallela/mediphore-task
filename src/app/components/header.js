@@ -3,66 +3,66 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { LogOut, LogIn } from "lucide-react";
 
 export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const router = useRouter();
 
-  // Function to check token and update isLoggedIn
-  const checkAuthStatus = () => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  };
-
-  useEffect(() => {
-    // Check auth status on mount
-    checkAuthStatus();
-
-    // Listen for route changes
-    const handleRouteChange = () => {
-      checkAuthStatus();
+    const checkAuthStatus = () => {
+        const token = localStorage.getItem("token");
+        setIsLoggedIn(!!token);
     };
 
-    // Subscribe to route change events
-    router.events?.on("routeChangeComplete", handleRouteChange);
+    useEffect(() => {
 
-    // Clean up event listener on unmount
-    return () => {
-      router.events?.off("routeChangeComplete", handleRouteChange);
+        checkAuthStatus();
+
+        const handleRouteChange = () => {
+            checkAuthStatus();
+        };
+
+        router.events?.on("routeChangeComplete", handleRouteChange);
+
+
+        return () => {
+            router.events?.off("routeChangeComplete", handleRouteChange);
+        };
+    }, [router.events]);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        router.push("/");
     };
-  }, [router.events]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    router.push("/");
-  };
-
-  return (
-    <header className="bg-white sticky z-50 top-0 dark:bg-gray-800 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/">
-          <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-            Mediphore
-          </h1>
-        </Link>
-        <nav>
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200"
-            >
-              Logout
-            </button>
-          ) : (
-            <Link href="/">
-              <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
-                Login
-              </button>
-            </Link>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
+    return (
+        <header className="bg-white dark:bg-gray-900 sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <Link href="/" className="flex items-center space-x-2">
+                    <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 tracking-tight">
+                        Mediphore
+                    </span>
+                </Link>
+                <nav className="flex items-center space-x-4">
+                    {isLoggedIn ? (
+                        <button
+                            onClick={handleLogout}
+                            className="inline-flex items-center px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-all duration-200 ease-in-out"
+                        >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Logout
+                        </button>
+                    ) : (
+                        <Link href="/">
+                            <button className="inline-flex items-center px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-all duration-200 ease-in-out">
+                                <LogIn className="w-4 h-4 mr-2" />
+                                Login
+                            </button>
+                        </Link>
+                    )}
+                </nav>
+            </div>
+        </header>
+    );
 }
